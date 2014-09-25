@@ -1,7 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cometd", "cometd.csproj", "{CE60C8C6-3F04-447B-946C-D22397E39EC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cometd.sl", "cometd.sl.csproj", "{14D3A37D-417A-4139-B76E-1A228D572A5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +17,10 @@ Global
 		{CE60C8C6-3F04-447B-946C-D22397E39EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE60C8C6-3F04-447B-946C-D22397E39EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE60C8C6-3F04-447B-946C-D22397E39EC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14D3A37D-417A-4139-B76E-1A228D572A5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14D3A37D-417A-4139-B76E-1A228D572A5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14D3A37D-417A-4139-B76E-1A228D572A5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14D3A37D-417A-4139-B76E-1A228D572A5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

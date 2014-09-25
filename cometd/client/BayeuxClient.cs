@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+#if !SILVERLIGHT
 using System.Timers;
+#endif
 using System.Threading;
 using Cometd.Bayeux;
 using Cometd.Bayeux.Client;
@@ -30,7 +32,12 @@ namespace Cometd.Client
         private ITransportListener publishListener;
         private long backoffIncrement;
         private long maxBackoff;
+#if SILVERLIGHT
+        private static object stateUpdateInProgressMutex = new object();
+#endif
+#if !SILVERLIGHT
         private static Mutex stateUpdateInProgressMutex = new Mutex();
+#endif
         private int stateUpdateInProgress;
         private AutoResetEvent stateChanged = new AutoResetEvent(false);
 
@@ -517,7 +524,7 @@ namespace Cometd.Client
                 action = ((String)advice[Message_Fields.RECONNECT_FIELD]);
             return action;
         }
-
+#if !SILVERLIGHT
         protected bool scheduleHandshake(long interval, long backoff)
         {
             return scheduleAction(
@@ -549,6 +556,31 @@ namespace Cometd.Client
             timer.Enabled = true;
             return true;
         }
+#endif
+
+#if SILVERLIGHT
+        protected bool scheduleHandshake(long interval, long backoff)
+        {
+            return scheduleAction(
+                    () => sendHandshake()
+                    , interval, backoff);
+        }
+
+        protected bool scheduleConnect(long interval, long backoff)
+        {
+            return scheduleAction(
+                    () => sendConnect()
+                    , interval, backoff);
+        }
+
+        private bool scheduleAction(Action action, long interval, long backoff)
+        {
+            long wait = interval + backoff;
+            if (wait <= 0) wait = 1;
+            Timer timer = new Timer(s => action(), null, wait, Timeout.Infinite);
+            return true;
+        }
+#endif
 
         public IList<String> AllowedTransports
         {
@@ -686,10 +718,20 @@ namespace Cometd.Client
 
         private void updateBayeuxClientState(BayeuxClientStateUpdater_createDelegate create, BayeuxClientStateUpdater_postCreateDelegate postCreate)
         {
+#if SILVERLIGHT
+            lock(stateUpdateInProgressMutex)
+            {
+#endif
+#if !SILVERLIGHT
             stateUpdateInProgressMutex.WaitOne();
+#endif
             ++stateUpdateInProgress;
+#if SILVERLIGHT
+            }
+#endif
+#if !SILVERLIGHT
             stateUpdateInProgressMutex.ReleaseMutex();
-
+#endif
             BayeuxClientState newState = null;
             BayeuxClientState oldState = bayeuxClientState;
 
@@ -713,12 +755,23 @@ namespace Cometd.Client
             newState.execute();
 
             // Notify threads waiting in waitFor()
+#if !SILVERLIGHT
             stateUpdateInProgressMutex.WaitOne();
+#endif
+#if SILVERLIGHT
+            lock(stateUpdateInProgressMutex)
+            {
+#endif
             --stateUpdateInProgress;
 
             if (stateUpdateInProgress == 0)
                 stateChanged.Set();
+#if !SILVERLIGHT
             stateUpdateInProgressMutex.ReleaseMutex();
+#endif
+#if SILVERLIGHT
+            }
+#endif
         }
 
         public String dump()

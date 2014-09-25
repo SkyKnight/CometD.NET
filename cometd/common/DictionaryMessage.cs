@@ -1,14 +1,29 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+#if !SILVERLIGHT
 using System.ServiceModel.Web;
+#endif
 using System.Runtime.Serialization.Json;
+#if !SILVERLIGHT
 using System.Web.Script.Serialization;
+#endif
+#if SILVERLIGHT
+using System.Runtime.Serialization;
+#endif
+#if SILVERLIGHT
+using Newtonsoft.Json;
+#endif
 using Cometd.Bayeux;
 
 namespace Cometd.Common
 {
+#if !SILVERLIGHT
     [Serializable]
+#endif
+#if SILVERLIGHT
+    [DataContract]
+#endif
     public class DictionaryMessage : Dictionary<String, Object>, IMutableMessage
     {
         private const long serialVersionUID = 4318697940670212190L;
@@ -33,7 +48,12 @@ namespace Cometd.Common
                 this.TryGetValue(Message_Fields.ADVICE_FIELD, out advice);
                 if (advice is String)
                 {
+#if !SILVERLIGHT
                     advice = jsonParser.Deserialize<IDictionary<String, Object>>(advice as String);
+#endif
+#if SILVERLIGHT
+                    advice = JsonConvert.DeserializeObject<IDictionary<String, Object>>(advice as String);
+#endif
                     this[Message_Fields.ADVICE_FIELD] = advice;
                 }
                 return (IDictionary<String, Object>)advice;
@@ -99,7 +119,12 @@ namespace Cometd.Common
                 this.TryGetValue(Message_Fields.DATA_FIELD, out data);
                 if (data is String)
                 {
+#if !SILVERLIGHT
                     data = jsonParser.Deserialize<Dictionary<String, Object>>(data as String);
+#endif
+#if SILVERLIGHT
+                    data = JsonConvert.DeserializeObject<Dictionary<String, Object>>(data as String);
+#endif
                     this[Message_Fields.DATA_FIELD] = data;
                 }
                 return (Dictionary<String, Object>)data;
@@ -114,7 +139,12 @@ namespace Cometd.Common
                 this.TryGetValue(Message_Fields.EXT_FIELD, out ext);
                 if (ext is String)
                 {
+#if !SILVERLIGHT
                     ext = jsonParser.Deserialize<Dictionary<String, Object>>(ext as String);
+#endif
+#if SILVERLIGHT
+                    ext = JsonConvert.DeserializeObject<Dictionary<String, Object>>(ext as String);
+#endif
                     this[Message_Fields.EXT_FIELD] = ext;
                 }
                 return (Dictionary<String, Object>)ext;
@@ -139,7 +169,12 @@ namespace Cometd.Common
         {
             get
             {
+#if !SILVERLIGHT
                 return jsonParser.Serialize(this as IDictionary<String, Object>);
+#endif
+#if SILVERLIGHT
+                return JsonConvert.SerializeObject(this as IDictionary<String, Object>);
+#endif
             }
         }
 
@@ -208,7 +243,13 @@ namespace Cometd.Common
             IList<IDictionary<String, Object>> dictionaryList = null;
             try
             {
+#if !SILVERLIGHT
                 dictionaryList = jsonParser.Deserialize<IList<IDictionary<String, Object>>>(content);
+#endif
+
+#if SILVERLIGHT
+                dictionaryList = JsonConvert.DeserializeObject<IList<IDictionary<String, Object>>>(content);
+#endif
             }
             catch (Exception e)
             {
@@ -230,6 +271,8 @@ namespace Cometd.Common
             return messages;
         }
 
+#if !SILVERLIGHT
         protected static JavaScriptSerializer jsonParser = new JavaScriptSerializer();
+#endif
     }
 }

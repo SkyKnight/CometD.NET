@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Net;
 using System.IO;
 using System.Runtime.Serialization.Json;
+#if !SILVERLIGHT
 using System.Web.Script.Serialization;
+#endif
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Cometd.Bayeux;
 using Cometd.Common;
+#if SILVERLIGHT
+using Newtonsoft.Json;
+#endif
 
 
 namespace Cometd.Client.Transport
@@ -154,12 +159,20 @@ namespace Cometd.Client.Transport
             request.Method = "POST";
             request.ContentType = "application/json;charset=UTF-8";
 
+#if !SILVERLIGHT
             if (request.CookieContainer == null)
                 request.CookieContainer = new CookieContainer();
             request.CookieContainer.Add(getCookieCollection());
+#endif
 
+#if !SILVERLIGHT
             JavaScriptSerializer jsonParser = new JavaScriptSerializer();
             String content = jsonParser.Serialize(ObjectConverter.ToListOfDictionary(messages));
+#endif
+
+#if SILVERLIGHT
+            String content = JsonConvert.SerializeObject(ObjectConverter.ToListOfDictionary(messages));
+#endif
 
             LongPollingRequest longPollingRequest = new LongPollingRequest(listener, messages, request);
 
@@ -214,11 +227,21 @@ namespace Cometd.Client.Transport
 
                 // Start the asynchronous operation to get the response
                 exchange.listener.onSending(ObjectConverter.ToListOfIMessage(exchange.messages));
+#if !SILVERLIGHT
                 IAsyncResult result = (IAsyncResult)exchange.request.BeginGetResponse(new AsyncCallback(GetResponseCallback), exchange);
 
                 long timeout = 120000;
                 ThreadPool.RegisterWaitForSingleObject(result.AsyncWaitHandle, new WaitOrTimerCallback(TimeoutCallback), exchange, timeout, true);
-
+#endif
+#if SILVERLIGHT
+                AutoResetEvent are = new AutoResetEvent(false);
+                exchange.request.BeginGetResponse(new AsyncCallback(asyncResult =>
+                {
+                    are.Set();
+                    GetResponseCallback(asyncResult);
+                }), exchange);
+                are.WaitOne();
+#endif
                 exchange.isSending = false;
             }
             catch (Exception e)
