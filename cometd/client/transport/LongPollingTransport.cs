@@ -269,10 +269,11 @@ namespace Cometd.Client.Transport
                     }
                     //Console.WriteLine("Received message(s): {0}", responseString);
 
+#if !SILVERLIGHT
                     if (response.Cookies != null)
                         foreach (Cookie cookie in response.Cookies)
                             exchange.AddCookie(cookie);
-
+#endif
                     response.Close();
                 }
                 exchange.messages = DictionaryMessage.parseMessages(responseString);

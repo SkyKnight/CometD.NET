@@ -85,6 +85,7 @@
     <Compile Include="cometd\common\DictionaryMessage.cs" />
     <Compile Include="cometd\common\ObjectConverter.cs" />
     <Compile Include="cometd\common\Print.cs" />
+    <Compile Include="JsonHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

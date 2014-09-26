@@ -249,6 +249,7 @@ namespace Cometd.Common
 
 #if SILVERLIGHT
                 dictionaryList = JsonConvert.DeserializeObject<IList<IDictionary<String, Object>>>(content);
+                JsonHelper.FixDeserializing(dictionaryList);
 #endif
             }
             catch (Exception e)
