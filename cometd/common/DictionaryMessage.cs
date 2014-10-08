@@ -53,6 +53,7 @@ namespace Cometd.Common
 #endif
 #if SILVERLIGHT
                     advice = JsonConvert.DeserializeObject<IDictionary<String, Object>>(advice as String);
+                    JsonHelper.FixDeserializing(advice as IDictionary<String, Object>);
 #endif
                     this[Message_Fields.ADVICE_FIELD] = advice;
                 }
@@ -124,6 +125,7 @@ namespace Cometd.Common
 #endif
 #if SILVERLIGHT
                     data = JsonConvert.DeserializeObject<Dictionary<String, Object>>(data as String);
+                    JsonHelper.FixDeserializing(data as Dictionary<String, Object>);
 #endif
                     this[Message_Fields.DATA_FIELD] = data;
                 }

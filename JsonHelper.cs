@@ -30,8 +30,11 @@ namespace Cometd.Common
                 {
                     if(jcontainer.Type == JTokenType.Array)
                         obj[k] = jcontainer.ToObject<List<object>>();
-                    else if(jcontainer.Type == JTokenType.Object)
+                    else if (jcontainer.Type == JTokenType.Object)
+                    {
                         obj[k] = jcontainer.ToObject<Dictionary<string, object>>();
+                        FixDeserializing(obj[k] as IDictionary<string, object>);
+                    }
                 }
             }
         }
