@@ -573,11 +573,13 @@ namespace Cometd.Client
                     , interval, backoff);
         }
 
+        private Timer _timer;
+
         private bool scheduleAction(Action action, long interval, long backoff)
         {
             long wait = interval + backoff;
             if (wait <= 0) wait = 1;
-            Timer timer = new Timer(s => action(), null, wait, Timeout.Infinite);
+            _timer = new Timer(s => action(), null, wait, Timeout.Infinite);
             return true;
         }
 #endif
