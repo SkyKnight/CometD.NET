@@ -246,7 +246,14 @@ namespace Cometd.Client.Transport
             }
             catch (Exception e)
             {
-                if (exchange.request != null) exchange.request.Abort();
+                if (exchange.request != null)
+                {
+                    try
+                    {
+                        exchange.request.Abort();
+                    }
+                    catch (ObjectDisposedException) { }
+                }
                 exchange.Dispose();
                 exchange.listener.onException(e, ObjectConverter.ToListOfIMessage(exchange.messages));
             }
