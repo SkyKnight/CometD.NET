@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>cometdnet</id>
+    <version>2.1</version>
+    <authors>Magnus Galåen, Even André Fiskvik, Miłosz Świetlik</authors>
+    <owners>oyatel.com</owners>
+    <licenseUrl>https://github.com/SkyKnight/CometD.NET</licenseUrl>
+    <projectUrl>https://github.com/SkyKnight/CometD.NET</projectUrl>
+    <!--<iconUrl>https://avatars1.githubusercontent.com/u/545160?v=3&amp;s=200</iconUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.Net version of CometD client.</description>
+    <releaseNotes>.Net version of CometD client.</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>cometd</tags>
+    <dependencies>
+      <group targetFramework="net35">  
+      </group>
+
+      <group targetFramework="sl50">
+        <dependency id="Newtonsoft.Json" version="6.0.5"/>
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Bin\Release\cometd2.dll" target="lib\net35" />
+    <file src="Bin\Release\cometd.sl.dll" target="lib\sl50" />
+  </files>
+</package>
