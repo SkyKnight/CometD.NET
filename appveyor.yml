@@ -6,6 +6,8 @@ branches:
 
 skip_tags: true
 
+configuration: Release
+
 assembly_info:
   patch: true
   file: AssemblyInfo.*
