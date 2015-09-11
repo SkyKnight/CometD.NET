@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>cometdnet</id>
-    <version>2.1</version>
+    <version>$version$</version>
     <authors>Magnus Galåen, Even André Fiskvik, Miłosz Świetlik</authors>
     <owners>oyatel.com</owners>
     <licenseUrl>https://github.com/SkyKnight/CometD.NET</licenseUrl>
@@ -23,7 +23,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Bin\Release\cometd2.dll" target="lib\net35" />
-    <file src="Bin\Release\cometd.sl.dll" target="lib\sl50" />
+    <file src="..\Bin\Release\cometd2.dll" target="lib\net35" />
+    <file src="..\Bin\Release\cometd.sl.dll" target="lib\sl50" />
   </files>
 </package>

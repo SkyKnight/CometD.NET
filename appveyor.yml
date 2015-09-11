@@ -1,0 +1,27 @@
+version: 2.1.{build}
+
+branches:
+  only:
+    - master
+
+skip_tags: true
+
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "{version}"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+
+build:
+  project: cometd.sln
+
+after_build:
+  - ps: .\nuget\pack.ps1
+
+deploy:
+  provider: NuGet
+  server: http://nuget.skyknight.pl/upload
+  api_key:
+    secure: OCl5MLBPhR7BryHYBv4s6iPl3C+6MkinK9hD21jpmRYi8UqpMigUOs/hh+Db5yB7
+  artifact: /.*\.nupkg/
