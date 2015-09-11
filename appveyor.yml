@@ -21,6 +21,11 @@ build:
 after_build:
   - ps: .\nuget\pack.ps1
 
+artifacts:
+  - path: Bin\Release\cometd2.dll
+    name: cometd2.dll
+  - path: '**\*.nupkg'
+
 deploy:
   provider: NuGet
   server: http://nuget.skyknight.pl/upload
