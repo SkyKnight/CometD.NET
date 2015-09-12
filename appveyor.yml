@@ -24,7 +24,7 @@ after_build:
 artifacts:
   - path: Bin\Release\cometd2.dll
     name: cometd2.dll
-  - path: '**\*.nupkg'
+  - path: '**\cometdnet.*.nupkg'
 
 deploy:
   provider: NuGet
